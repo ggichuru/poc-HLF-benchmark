@@ -1,0 +1,28 @@
+test:
+  name: basic-contract-benchmark
+  description: A test benchmark
+  workers:
+    number: 2
+    type: local
+  rounds:
+    - label: createAsset
+      description: Create asset benchmark
+      txNumber: 50
+      rateControl:
+        { type: "linear-rate", opts: { startingTps: 50, finishingTps: 200 } }
+      workload:
+        module: workload/createAsset.js
+        arguments:
+          contractId: basic
+
+monitors:
+  resource:
+    - module: docker
+      options:
+        interval: 4
+        containers:
+          [
+            "peer0.org1.example.com",
+            "peer0.org2.example.com",
+            "orderer.example.com",
+          ]
